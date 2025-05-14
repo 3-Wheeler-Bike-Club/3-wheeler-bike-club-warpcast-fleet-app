@@ -5,7 +5,7 @@ import { celo, optimism } from "wagmi/chains";
 export const config = createConfig({
     connectors: [injected()],
     chains: [celo, optimism],
-    ssr: true,
+    ssr: false,
     transports: {
       [celo.id]: http(process.env.ALCHEMY_RPC_URL),
       [optimism.id]: http(),
