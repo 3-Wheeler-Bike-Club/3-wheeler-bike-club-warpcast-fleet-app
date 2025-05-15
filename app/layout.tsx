@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { FrameProvider } from "@/context/FrameProvider";
-import { config } from "@/utils/config";
 import { WagmiContext } from "@/context/wagmiContext";
 import { MiniAppContext } from "@/context/miniAppContext";
 
@@ -26,13 +25,13 @@ export default function RootLayout({
       <body
         className={`${geistMono.className}`}
       >
-        <MiniAppContext>
-          <WagmiContext>
+        <WagmiContext>
+          <MiniAppContext>
             <FrameProvider>
               {children}
             </FrameProvider>
-          </WagmiContext>
-        </MiniAppContext>
+          </MiniAppContext>
+        </WagmiContext>
       </body>
     </html>
   );
