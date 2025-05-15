@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useConnect } from "wagmi";
-import { injected } from "wagmi/connectors";
+import { farcasterFrame as miniAppConnector } from '@farcaster/frame-wagmi-connector'
 
 
 export const MiniAppContext = ({ children }: { children: React.ReactNode }) => {
@@ -10,7 +10,7 @@ export const MiniAppContext = ({ children }: { children: React.ReactNode }) => {
     const { connect } = useConnect();
       
     useEffect(() => {
-        connect({ connector: injected() });
+        connect({ connector: miniAppConnector() });
     }, []);
 
     return (
