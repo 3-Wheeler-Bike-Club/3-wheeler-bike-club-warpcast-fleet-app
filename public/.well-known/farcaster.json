@@ -1,12 +1,25 @@
 {
     "frame": {
-      "version": "1",
-      "name": "3WB",
+      "version": "next",
+      "name": "3 Wheeler Bike Club",
       "iconUrl": "https://warp.3wb.club/3wbClubLogo.png",
       "homeUrl": "https://warp.3wb.club",
-      "imageUrl": "https://warp.3wb.club/3wbClubLogo.png",
-      "buttonTitle": "🛺💨 Finance a 3-Wheeler",
       "splashImageUrl": "https://warp.3wb.club/3wbClubLogo.png",
-      "splashBackgroundColor": "#ffffff"
+      "splashBackgroundColor": "#f5f0ec",
+      "webhookUrl": "https://warp.3wb.club/webhook",
+      "subtitle": "Finance a 3-Wheeler",
+      "description": "Giving 3-Wheeler drivers the keys to ownership, and investors access to fractionalized opportunities to earn steady returns.",
+      "screenshotUrls": [""],
+      "primaryCategory": "Finance",
+      "tags":[
+        "defi",
+        "RWA",
+        "earn"
+      ],
+      "heroImageUrl": "https://warp.3wb.club/opengraph-image.png",
+      "tagline": "Ownership, Community, and Governance",
+      "ogTitle": "3-Wheeler Bike Club",
+      "ogDescription": "Giving 3-Wheeler drivers the keys to ownership, and investors access to fractionalized opportunities to earn steady returns.",
+      "ogImageUrl": "https://warp.3wb.club/opengraph-image.png"
     }
   }
