@@ -1,7 +1,7 @@
 import { fleetOrderBook } from "@/utils/constants/addresses"
 import { getDataSuffix, submitReferral } from "@divvi/referral-sdk"
 import { useState } from "react"
-import { createWalletClient, custom, encodeFunctionData, erc20Abi, maxUint256 } from "viem"
+import { createWalletClient, encodeFunctionData, erc20Abi, http, maxUint256 } from "viem"
 import { celo } from "viem/chains"
 
 export const useDivvi = () => {
@@ -14,7 +14,7 @@ export const useDivvi = () => {
         // Step 1: Create a wallet client and get the account
         const walletClient = createWalletClient({
           chain: celo,
-          transport: custom(window.ethereum),
+          transport: http(),
         })
 
         const data = encodeFunctionData({
