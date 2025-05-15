@@ -1,9 +1,10 @@
-import { injected } from "wagmi/connectors";
 import { cookieStorage, createConfig, createStorage, http } from "wagmi";
 import { celo, optimism } from "wagmi/chains";
+import { farcasterFrame as miniAppConnector } from '@farcaster/frame-wagmi-connector'
+
 
 export const config = createConfig({
-    connectors: [injected()],
+    connectors: [miniAppConnector()],
     chains: [celo, optimism],
     ssr: true,
     transports: {
