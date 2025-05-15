@@ -1,45 +1,12 @@
 {
-    "accountAssociation": {
-      "header": "eyJmaWQiOjkxNTIsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHgwMmVmNzkwRGQ3OTkzQTM1ZkQ4NDdDMDUzRURkQUU5NDBEMDU1NTk2In0",
-      "payload": "eyJkb21haW4iOiJyZXdhcmRzLndhcnBjYXN0LmNvbSJ9",
-      "signature": "MHgxMGQwZGU4ZGYwZDUwZTdmMGIxN2YxMTU2NDI1MjRmZTY0MTUyZGU4ZGU1MWU0MThiYjU4ZjVmZmQxYjRjNDBiNGVlZTRhNDcwNmVmNjhlMzQ0ZGQ5MDBkYmQyMmNlMmVlZGY5ZGQ0N2JlNWRmNzMwYzUxNjE4OWVjZDJjY2Y0MDFj"
-    },
     "frame": {
-        "version": "1",
-        "imageUrl": "https://yoink.party/framesV2/opengraph-image",
-        "button": {
-            "title": "🛺💨 Finance a 3-Wheeler",
-            "action": {
-                "type": "launch_frame",
-                "url": "https://warp.3wb.club",
-                "name":"3WB",
-                "splashImageUrl": "https://warp.3wb.club/3wbClubLogo.png",
-                "splashBackgroundColor":"#ffffff"
-            }
-        },
-        "name": "Rewards",
-        "iconUrl": "https://warp.3wb.club/3wbClubLogo.png",
-        "splashImageUrl": "https://warp.3wb.club/3wbClubLogo.png",
-        "splashBackgroundColor": "#000000",
-        "homeUrl": "https://warp.3wb.club",
-        "webhookUrl": "https://client.warpcast.com/v1/creator-rewards-notifs-webhook",
-        "subtitle": "Top Warpcast creators",
-        "description": "Climb the leaderboard and earn rewards by being active on Warpcast.",
-        "screenshotUrls": [
-            "https://rewards.warpcast.com/screenshot1.png",
-            "https://rewards.warpcast.com/screenshot2.png",
-            "https://rewards.warpcast.com/screenshot3.png"
-        ],
-        "primaryCategory": "finance",
-        "tags": [
-            "defi",
-            "RWA",
-            "earn"
-        ],
-        "heroImageUrl": "https://rewards.warpcast.com/og.png",
-        "tagline": "Top Warpcast creators",
-        "ogTitle": "Rewards",
-        "ogDescription": "Climb the leaderboard and earn rewards by being active on Warpcast.",
-        "ogImageUrl": "https://rewards.warpcast.com/og.png"
+      "version": "1",
+      "name": "3WB",
+      "iconUrl": "https://warp.3wb.club/3wbClubLogo.png",
+      "homeUrl": "https://warp.3wb.club",
+      "imageUrl": "https://warp.3wb.club/3wbClubLogo.png",
+      "buttonTitle": "🛺💨 Finance a 3-Wheeler",
+      "splashImageUrl": "https://warp.3wb.club/3wbClubLogo.png",
+      "splashBackgroundColor": "#ffffff"
     }
   }
