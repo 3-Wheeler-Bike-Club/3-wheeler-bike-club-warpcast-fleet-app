@@ -22,6 +22,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta property="og:image" content="https://warp.3wb.club/opengraph-image.png" />
+      </head>
       <body
         className={`${geistMono.className}`}
       >
