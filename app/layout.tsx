@@ -38,6 +38,10 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <meta 
+        property="og:image" 
+          content="https://warp.3wb.club/opengraph-image.png" 
+        />
+        <meta 
           name="fc:frame"
           content={JSON.stringify(frame)} 
         />
