@@ -20,8 +20,28 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const frame = {
+    version: "next",
+    imageUrl: "https://warp.3wb.club/opengraph-image.png",
+    button: {
+      title: "Finance a 3-Wheeler 🛺💨",
+      action: {
+        type: "launch_frame",
+        url: "https://warp.3wb.club",
+        name:"3WB P2P Fleet Financing",
+        splashImageUrl: "https://warp.3wb.club/3wbClubLogo.png",
+        splashBackgroundColor:"#f5f0ec"
+      }
+    }
+  }
   return (
     <html lang="en">
+      <head>
+        <meta 
+          name="fc:frame"
+          content={JSON.stringify(frame)} 
+        />
+      </head>
       <body
         className={`${geistMono.className}`}
       >

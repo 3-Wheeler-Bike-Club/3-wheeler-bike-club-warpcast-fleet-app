@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@divvi/referral-sdk": "^1.0.0",
     "@farcaster/frame-sdk": "^0.0.41",
     "@farcaster/frame-wagmi-connector": "^0.0.30",
     "@radix-ui/react-slot": "^1.2.2",
