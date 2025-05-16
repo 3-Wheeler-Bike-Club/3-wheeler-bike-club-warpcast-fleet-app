@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { FrameProvider } from "@/context/FrameProvider";
 import { WagmiContext } from "@/context/wagmiContext";
 import { MiniAppContext } from "@/context/miniAppContext";
 import { Toaster } from "@/components/ui/sonner";
@@ -55,10 +54,8 @@ export default function RootLayout({
         </div>
         <WagmiContext>
           <MiniAppContext>
-            <FrameProvider>
-              {children}
-              <Toaster expand={true} richColors />
-            </FrameProvider>
+            {children}
+            <Toaster expand={true} richColors />
           </MiniAppContext>
         </WagmiContext>
       </body>
