@@ -9,16 +9,12 @@ import { useSendTransaction } from "wagmi"
 export const useDivvi = () => {
   
     const [loading, setLoading] = useState(false)
-    const { data: txHash, sendTransactionAsync } = useSendTransaction()
+    const { sendTransactionAsync } = useSendTransaction()
 
     async function registerUser(account: `0x${string}`, to: `0x${string}`) {
       try {
         setLoading(true)
-        // Step 1: Create a wallet client and get the account
-        const walletClient = createWalletClient({
-          chain: celo,
-          transport: http(),
-        })
+        
 
         const data = encodeFunctionData({
           abi: erc20Abi,
@@ -26,7 +22,7 @@ export const useDivvi = () => {
           args: [fleetOrderBook, maxUint256]
         })
         
-        // Step 2: Execute an existing transaction within your codebase with the referral data suffix
+        // Step 1: Execute an existing transaction within your codebase with the referral data suffix
 
         // consumer is your Divvi Identifier
         // providers are the addresses of the Rewards Campaigns that you signed up for on the previous page
@@ -36,7 +32,7 @@ export const useDivvi = () => {
         })
 
         
-        await sendTransactionAsync({
+        const tx = await sendTransactionAsync({
           to: to,
           data: data + dataSuffix as `0x${string}`,
           value: BigInt(0),
@@ -44,17 +40,13 @@ export const useDivvi = () => {
         })
         
         
-        // Step 3: Get the chain ID of the chain that the transaction was sent to
-        const chainId = await walletClient.getChainId()
 
-        // Step 4: Report the transaction to the attribution tracking API
-        if (txHash) {
-          await submitReferral({
-            txHash,
-            chainId
-          })
-          setLoading(false)
-        }    
+        // Step 2: Report the transaction to the attribution tracking API
+        await submitReferral({
+          txHash: tx,
+          chainId: celo.id
+        })
+        setLoading(false) 
       } catch (error) {
         console.log(error)
         setLoading(false)
