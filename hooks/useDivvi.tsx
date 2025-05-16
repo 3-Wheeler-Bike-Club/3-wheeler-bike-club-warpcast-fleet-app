@@ -9,7 +9,7 @@ import { useSendTransaction } from "wagmi"
 export const useDivvi = () => {
   
     const [loading, setLoading] = useState(false)
-    const { data: txHash, sendTransactionAsync } = useSendTransaction()
+    const { sendTransactionAsync } = useSendTransaction()
 
     async function registerUser(account: `0x${string}`, to: `0x${string}`) {
       try {
@@ -32,7 +32,7 @@ export const useDivvi = () => {
         })
 
         
-        await sendTransactionAsync({
+        const tx = await sendTransactionAsync({
           to: to,
           data: data + dataSuffix as `0x${string}`,
           value: BigInt(0),
@@ -43,7 +43,7 @@ export const useDivvi = () => {
 
         // Step 2: Report the transaction to the attribution tracking API
         await submitReferral({
-          txHash: txHash as `0x${string}`,
+          txHash: tx,
           chainId: celo.id
         })
         setLoading(false) 
