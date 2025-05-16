@@ -109,7 +109,7 @@ export function Wrapper() {
         address: divvi,
         functionName: "isUserReferredToProvider",
         chainId: optimism.id,
-        args: [address!, "0x6226ddE08402642964f9A6de844ea3116F0dFc7e"],
+        args: [address!, "0x0423189886D7966f0DD7E7d256898DAeEE625dca"],
 
     })
     useEffect(() => { 
