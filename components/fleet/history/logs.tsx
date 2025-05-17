@@ -16,7 +16,6 @@ import { useGetLogs } from "@/hooks/useGetLogs";
 import { useAccount } from "wagmi";
 import { Table, TableBody, TableCaption } from "../../ui/table";
 import { Log } from "./log";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 
 
@@ -54,15 +53,15 @@ export function Logs() {
                         </div>
                         <Table>
                             <TableCaption className="mt-12">A list of your recent fleet orders.</TableCaption>
-                            <ScrollArea className="h-64">
-                                <TableBody>
+                            <TableBody>
+                                <div className="h-64">
                                     {
                                         logs?.map((log) => (
                                             <Log key={log.transactionHash} log={log} />
                                         ))
                                     }
-                                </TableBody>
-                            </ScrollArea>
+                                </div>        
+                            </TableBody>
                         </Table>
                     </div>
                 </div>
