@@ -191,7 +191,7 @@ export function Wrapper() {
                         <DrawerTitle>
                             {isFractionsMode ? "Purchase 3-Wheeler Fractions" : "Purchase a 3-Wheeler"}
                         </DrawerTitle>
-                        <DrawerDescription className="max-md:text-[0.9rem]">Choose the amount of {isFractionsMode ? "fractions" : "3-Wheelers"} to purchase.</DrawerDescription>
+                        <DrawerDescription className="text-xs">Choose the amount of {isFractionsMode ? "fractions" : "3-Wheelers"} to purchase.</DrawerDescription>
                     </DrawerHeader>
                     <div className="flex flex-col gap-2 p-4 pb-0">
                         
@@ -329,7 +329,7 @@ export function Wrapper() {
                                     {isFractionsMode ? <RefreshCw className="h-6 w-6 text-muted-foreground"/> : <RefreshCw className="h-7 w-7 text-yellow-600"/>}
                                 </Label>
                             </div>
-                            <div className="text-xs text-muted-foreground">
+                            <div className="text-xs text-muted-foreground max-md:text-[11px] text-center">
                                 <p>Toggle between buying fractions or a single 3-Wheeler</p>
                             </div>
                         </div>

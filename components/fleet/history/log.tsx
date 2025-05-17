@@ -16,7 +16,7 @@ export function Log({ log }: LogProps) {
 
     return (
         <>
-            <TableRow className="flex w-full items-center">
+            <TableRow className="flex w-full items-center h-12">
                 <TableCell className="w-1/4">{log.eventName === "FleetOrdered" ? log.args.ids.join(",") : log.eventName === "FleetFractionOrdered" ? log.args.id : log.args.ids.join(",")}</TableCell>
                 <TableCell className="w-1/4">
                     {   

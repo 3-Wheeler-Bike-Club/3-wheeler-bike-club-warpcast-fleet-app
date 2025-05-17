@@ -50,9 +50,6 @@ export default function RootLayout({
       <body
         className={`${geistMono.className}`}
       >
-        <div className="bg-yellow-500 text-black py-1 text-center font-bold z-50">
-          ⚠️ Test Mode: Do not use real funds. Contact us at <a href="https://t.me/threeWB" className="text-blue-500">https://t.me/threeWB</a> for test tokens.
-        </div>
         <WagmiContext>
           <MiniAppContext>
             <FrameProvider>
