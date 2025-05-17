@@ -185,7 +185,7 @@ export function Wrapper() {
                 }
                 { fleetOwned && fleetOwned.length >= 1 && (
                     <div className="max-w-[66rem] w-full flex flex-col gap-6">
-                        <Carousel className="w-full" setApi={setApi}>
+                        <Carousel className="w-full max-md:mb-10" setApi={setApi}>
                             <div className="flex flex-col w-full mt-6 mb-2 px-4">
                                 <div className="flex flex-col">
                                     <span className="text-xs text-muted-foreground">Total Fleet</span>            

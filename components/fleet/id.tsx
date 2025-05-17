@@ -133,11 +133,11 @@ export function Id( {fleet}: IdProps ) {
                         </div>
                         <div className="flex justify-between items-center">
                             <span className="font-semibold">Weekly ROI:</span>
-                            <span className="text-right"><span className="font-bold text-muted-foreground" >$</span> {isfleetFractioned ? `${((( Number(fleetFractionPrice!) * Number(fleetShares!) ) * 1.75) / 60).toFixed(2)}` : `${(( (50 * Number(fleetFractionPrice!)) * 1.75 ) / 60).toFixed(2)}`}</span>
+                            <span className="text-right"><span className="font-bold text-muted-foreground" >$</span> {isfleetFractioned ? `${((( Number(fleetFractionPrice!) * Number(fleetShares!) ) * 1.75) / 60).toFixed(4)}` : `${(( (50 * Number(fleetFractionPrice!)) * 1.75 ) / 60).toFixed(4)}`}</span>
                         </div>
                         <div className="flex justify-between items-center">
                             <span className="font-semibold">Total ROI <span className="text-muted-foreground italic text-yellow-800">(75%)</span>:</span>
-                            <span className="text-right"><span className="font-bold text-muted-foreground" >$</span> {isfleetFractioned ? `${ ( Number(fleetFractionPrice!) * Number(fleetShares!) ) * 1.75 }` : `${ ( 50 * Number(fleetFractionPrice!) ) * 1.75 }`}</span>
+                            <span className="text-right"><span className="font-bold text-muted-foreground" >$</span> {isfleetFractioned ? `${ (( Number(fleetFractionPrice!) * Number(fleetShares!) ) * 1.75).toFixed(2) }` : `${ (( 50 * Number(fleetFractionPrice!) ) * 1.75).toFixed(2) }`}</span>
                         </div>
                     </div>
                 </div>
