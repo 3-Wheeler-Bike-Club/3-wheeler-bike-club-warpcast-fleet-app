@@ -18,7 +18,7 @@ import { motion } from "framer-motion"
 import { ChartPie, Ellipsis, Minus, Plus, RefreshCw } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { /*USDT,*/ USDT_ADAPTER, divvi, /*cUSD,*/ fleetOrderBook } from "@/utils/constants/addresses";
+import { USDT_ADAPTER, divvi, /*cUSD,*/ fleetOrderBook } from "@/utils/constants/addresses";
 import { fleetOrderBookAbi } from "@/utils/abis/fleetOrderBook";
 import { erc20Abi } from "viem";
 import { celo, optimism } from "viem/chains";
@@ -36,7 +36,6 @@ export function Wrapper() {
 
     const [amount, setAmount] = useState(1)
     const [fractions, setFractions] = useState(1)
-    const [loadingUSDT, setLoadingUSDT] = useState(false)
     const [loadingCeloUSD, setLoadingCeloUSD] = useState(false)
     const [isFractionsMode, setIsFractionsMode] = useState(true)
 
@@ -45,7 +44,6 @@ export function Wrapper() {
     const { writeContractAsync } = useWriteContract()
 
     const fleetFractionPriceQueryClient = useQueryClient()
-    const allowanceDollarQueryClient = useQueryClient()
     const allowanceCeloDollarQueryClient = useQueryClient()
     const isUserReferredToProviderQueryClient = useQueryClient()
     const { data: blockNumber } = useBlockNumber({ watch: true }) 
@@ -81,15 +79,6 @@ export function Wrapper() {
         fleetFractionPriceQueryClient.invalidateQueries({ queryKey: fleetFractionPriceQueryKey }) 
     }, [blockNumber, fleetFractionPriceQueryClient, fleetFractionPriceQueryKey]) 
 
-    const { data: allowanceUSDT, isLoading: allowanceDollarLoading, queryKey: allowanceDollarQueryKey} = useReadContract({
-        abi: erc20Abi,
-        address: "0x74869c892C9f64AC650e3eC13F6d07C0f21007a6"/*USDT*/,
-        functionName: "allowance",
-        args: [address!, fleetOrderBook],
-    })
-    useEffect(() => { 
-        allowanceDollarQueryClient.invalidateQueries({ queryKey: allowanceDollarQueryKey }) 
-    }, [blockNumber, allowanceDollarQueryClient, allowanceDollarQueryKey]) 
 
 
     const { data: allowanceCeloUSD, isLoading: allowanceCeloDollarLoading, queryKey: allowanceCeloDollarQueryKey } = useReadContract({
@@ -104,7 +93,7 @@ export function Wrapper() {
     console.log(allowanceCeloUSD)
 
 
-    const { data: isUserReferredToProvider, isLoading: isUserReferredToProviderLoading, queryKey: isUserReferredToProviderQueryKey } = useReadContract({
+    const { data: isUserReferredToProvider, queryKey: isUserReferredToProviderQueryKey } = useReadContract({
         abi: divviAbi,
         address: divvi,
         functionName: "isUserReferredToProvider",
@@ -121,40 +110,7 @@ export function Wrapper() {
    
 
 
-    // order multiple fleet with USDT or celoUSD
-    async function orderFleetWithUSDT() {    
-        try {
-            setLoadingUSDT(true)
-            writeContractAsync({
-                abi: fleetOrderBookAbi,
-                address: fleetOrderBook,
-                chainId: celo.id,
-                feeCurrency: USDT_ADAPTER,
-                functionName: "orderFleet",
-                args: [BigInt(amount), "0x74869c892C9f64AC650e3eC13F6d07C0f21007a6"/*USDT*/],
-            },{
-                onSuccess() {
-                    //success toast
-                    toast.success("Purchase successful", {
-                        description: `You can now view your ${amount > 1 ? "3-Wheelers" : " 3-Wheeler"} in your fleet`,
-
-                    })
-                    setLoadingUSDT(false)
-                    router.push("/fleet")
-                },
-                onError(error) {
-                    console.log(error)
-                    toast.error("Purchase failed", {
-                        description: `Something went wrong, please try again`,
-                    })
-                    setLoadingUSDT(false)
-                }
-            });
-        } catch (error) {
-            console.log(error)
-            setLoadingUSDT(false)
-        }
-    }
+    // order multiple fleet with celoUSD
     async function orderFleetWithCeloUSD() { 
         try {
             setLoadingCeloUSD(true)
@@ -189,40 +145,7 @@ export function Wrapper() {
     }
 
 
-    // order fleet fractions & single 3-Wheeler with USDT or celoUSD
-    async function orderFleetFractionsWithUSDT( shares: number ) {    
-        try {
-            setLoadingUSDT(true)
-            writeContractAsync({
-                abi: fleetOrderBookAbi,
-                address: fleetOrderBook,
-                chainId: celo.id,
-                feeCurrency: USDT_ADAPTER,
-                functionName: "orderFleetFraction",
-                args: [BigInt(shares), "0x74869c892C9f64AC650e3eC13F6d07C0f21007a6"/*USDT*/],
-            },{
-                onSuccess() {
-                    //success toast
-                    toast.success("Purchase successful", {
-                        description: `You can now view your 3-Wheeler ${shares == 50 ? "" : `${shares > 1 ? "fractions" : "fraction"}`} in your fleet`,
-
-                    })
-                    setLoadingUSDT(false)
-                    router.push("/fleet")
-                },
-                onError(error) {
-                    console.log(error)
-                    toast.error("Purchase failed", {
-                        description: `Something went wrong, please try again`,
-                    })
-                    setLoadingUSDT(false)
-                }
-            });
-        } catch (error) {
-            console.log(error)
-            setLoadingUSDT(false)
-        }
-    }
+    // order fleet fractions & single 3-Wheeler with celoUSD
     async function orderFleetFractionsWithCeloUSD( shares: number ) {    
         try {
             setLoadingCeloUSD(true)
@@ -326,68 +249,26 @@ export function Wrapper() {
                     
                     <div className="flex flex-col gap-2 py-14 px-4 pb-6">
                             <div className="flex w-full justify-between">
-                                {/**pay with USDT */}
-                                <Button 
-                                    className={ `${allowanceUSDT && allowanceUSDT > 0 ? "w-48/100 hover:bg-yellow-600" : "w-48/100 bg-yellow-300 hover:bg-yellow-400"}` } 
-                                    disabled={loadingCeloUSD || loadingUSDT} 
-                                    onClick={() => {
-                                        if (allowanceUSDT && allowanceUSDT > 0 && isUserReferredToProvider) {
-                                            if (isFractionsMode) {
-                                                orderFleetFractionsWithUSDT(fractions)
-                                            } else {
-                                                orderFleetWithUSDT()
-                                            }
-                                        } else {
-                                            registerUser(address!, "0x74869c892C9f64AC650e3eC13F6d07C0f21007a6")
-                                        }
-                                    }}
-                                >
-                                    {
-                                        loadingUSDT || loading
-                                        ? (
-                                            <>
-                                                <motion.div
-                                                    initial={{ rotate: 0 }}
-                                                    animate={{ rotate: 360 }}
-                                                    transition={{
-                                                        duration: 1,
-                                                        repeat: Infinity,
-                                                        ease: "linear",
-                                                    }}
-                                                >
-                                                    <Ellipsis/>
-                                                </motion.div>
-                                            </>
-                                        )
-                                        : (
-                                            <>
-                                                {
-                                                    allowanceDollarLoading ? (
-                                                       <></>
-                                                    )  
-                                                    : (
-                                                        <>
-                                                            {allowanceUSDT && allowanceUSDT > 0 && isUserReferredToProvider ? "Pay with USDT" : "Approve USDT" }
-                                                        </>
-                                                    )
-                                                }
-                                            </>
-                                        )
-                                    }
-                                </Button>
+                                
                                 {/**pay with celoUSD */}
                                 <Button 
-                                    className={` ${allowanceCeloUSD && allowanceCeloUSD > 0 ? "w-48/100 hover:bg-yellow-600" : "w-48/100 bg-yellow-300 hover:bg-yellow-400"}` }
-                                    disabled={loadingCeloUSD || loadingUSDT} 
+                                    className={` ${allowanceCeloUSD && allowanceCeloUSD > 0 ? "w-full hover:bg-yellow-600" : "w-full bg-yellow-300 hover:bg-yellow-400"}` }
+                                    disabled={loadingCeloUSD  || loading} 
                                     onClick={() => {
-                                        if (allowanceCeloUSD && allowanceCeloUSD > 0 && isUserReferredToProvider) {
+                                        if (allowanceCeloUSD && allowanceCeloUSD > 0) {
                                             if (isFractionsMode) {
                                                 orderFleetFractionsWithCeloUSD(fractions)
                                             } else {
                                                 orderFleetWithCeloUSD()
                                             }
                                         } else {
-                                            registerUser(address!, "0x74869c892C9f64AC650e3eC13F6d07C0f21007a6")
+                                            if (!isUserReferredToProvider) {
+                                                registerUser(address!, "0x74869c892C9f64AC650e3eC13F6d07C0f21007a6")
+                                            } else {
+                                                toast.error("Already approved!", {
+                                                    description: "You are have already approved & registered to a provider",
+                                                })
+                                            }
                                         }
                                     }}
                                 >
@@ -418,7 +299,7 @@ export function Wrapper() {
                                                     : (
                                                         <>
                                                             {
-                                                                allowanceCeloUSD && allowanceCeloUSD > 0 && isUserReferredToProvider ? "Pay with cUSD" : "Approve cUSD"
+                                                                allowanceCeloUSD && allowanceCeloUSD > 0 ? "Pay with cUSD" : "Approve cUSD"
                                                             }
                                                         </>
                                                     )
