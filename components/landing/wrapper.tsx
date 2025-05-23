@@ -60,16 +60,13 @@ export function Wrapper() {
                     </div>
                 </div>
 
-                {
-                    isConnected && (
-                        <Button 
-                            onClick={Login} 
-                            className="w-64 h-16 text-base font-semibold rounded-3xl"
-                        >
-                            <p>START EARNING</p>
-                        </Button>
-                    )
-                }
+                <Button 
+                    onClick={Login} 
+                    disabled={!isConnected}
+                    className="w-64 h-16 text-base font-semibold rounded-3xl"
+                >
+                    <p>START EARNING</p>
+                </Button>
             </div>
 
             <footer className="w-full text-center py-4 text-sm">

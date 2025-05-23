@@ -52,7 +52,6 @@ export function Logs() {
                             <span className="w-1/4">Date</span>
                         </div>
                         <Table>
-                            <TableCaption className="mt-12">A list of your recent fleet orders.</TableCaption>
                             <TableBody>
                                 <div className="h-64">
                                     {
@@ -65,7 +64,6 @@ export function Logs() {
                         </Table>
                     </div>
                 </div>
-                <DrawerFooter></DrawerFooter>
                 </DrawerContent>
         </Drawer>
         </>
