@@ -62,6 +62,7 @@ export function Logs() {
                                 </div>        
                             </TableBody>
                         </Table>
+                        <p className="mt-12 text-center text-sm text-muted-foreground">A list of your recent fleet orders.</p>
                     </div>
                 </div>
                 </DrawerContent>
