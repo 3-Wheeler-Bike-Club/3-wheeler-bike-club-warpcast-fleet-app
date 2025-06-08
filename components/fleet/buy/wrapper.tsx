@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation";
-import { useAccount, useBlockNumber, useReadContract, useWriteContract } from "wagmi";
+import { useAccount, useBlockNumber, useReadContract, useSendTransaction, useWriteContract } from "wagmi";
 import { Button } from "@/components/ui/button"
 import {
   Drawer,
@@ -18,14 +18,16 @@ import { motion } from "framer-motion"
 import { ChartPie, Ellipsis, Minus, Plus, RefreshCw } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { USDT_ADAPTER, divvi, /*cUSD,*/ fleetOrderBook } from "@/utils/constants/addresses";
+import { USDT_ADAPTER, divvi, /*cUSD,*/ fleetOrderBook, fleetOrderToken } from "@/utils/constants/addresses";
 import { fleetOrderBookAbi } from "@/utils/abis/fleetOrderBook";
-import { erc20Abi } from "viem";
+import { encodeFunctionData, erc20Abi, formatUnits, parseUnits } from "viem";
 import { celo, optimism } from "viem/chains";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 import { divviAbi } from "@/utils/abis/divvi";
 import { useDivvi } from "@/hooks/useDivvi";
+import { fleetOrderTokenAbi } from "@/utils/abis/fleetOrderToken";
+import { publicClient } from "@/utils/client";
 
 
 
@@ -41,13 +43,16 @@ export function Wrapper() {
 
     const router = useRouter()
     
+    
     const { writeContractAsync } = useWriteContract()
 
     const fleetFractionPriceQueryClient = useQueryClient()
     const allowanceCeloDollarQueryClient = useQueryClient()
     const isUserReferredToProviderQueryClient = useQueryClient()
+    const testTokenBalanceQueryClient = useQueryClient()
     const { data: blockNumber } = useBlockNumber({ watch: true }) 
 
+    const { sendTransactionAsync } = useSendTransaction()
     const { registerUser, loading } = useDivvi()
 
 
@@ -83,7 +88,7 @@ export function Wrapper() {
 
     const { data: allowanceCeloUSD, isLoading: allowanceCeloDollarLoading, queryKey: allowanceCeloDollarQueryKey } = useReadContract({
         abi: erc20Abi,
-        address: "0x74869c892C9f64AC650e3eC13F6d07C0f21007a6"/*cUSD*/,
+        address: fleetOrderToken/*cUSD*/,
         functionName: "allowance",
         args: [address!, fleetOrderBook],
     })
@@ -106,6 +111,52 @@ export function Wrapper() {
     }, [blockNumber, isUserReferredToProviderQueryClient, isUserReferredToProviderQueryKey]) 
     console.log(isUserReferredToProvider!)
 
+    const { data: testTokenBalance, queryKey: testTokenBalanceQueryKey } = useReadContract({
+        abi: erc20Abi,
+        address: fleetOrderToken,
+        functionName: "balanceOf",
+        chainId: celo.id,
+        args: [address!],
+
+    })
+    useEffect(() => { 
+        testTokenBalanceQueryClient.invalidateQueries({ queryKey: testTokenBalanceQueryKey }) 
+    }, [blockNumber, testTokenBalanceQueryClient, testTokenBalanceQueryKey]) 
+    console.log(testTokenBalance!)
+
+    async function getTestTokens() {
+        try {
+            setLoadingCeloUSD(true)
+            const hash = await sendTransactionAsync({
+                to: fleetOrderToken,
+                data: encodeFunctionData({
+                    abi: fleetOrderTokenAbi,
+                    functionName: "dripPayeeFromPSP",
+                    args: [address!, parseUnits("1500000", 18)],
+                }),
+                chainId: celo.id,
+            })
+            const transaction = await publicClient.waitForTransactionReceipt({
+                confirmations: 1,
+                hash: hash
+            })
+
+            if (transaction) {
+                toast.success("Test Tokens Received", {
+                    description: `You can now make orders to your fleet with test tokens`,
+                })
+                setLoadingCeloUSD(false)
+            }
+            
+        } catch (error) {
+            console.log(error)
+            toast.error("Transaction failed", {
+                description: `Something went wrong, please try again`,
+            })
+            setLoadingCeloUSD(false)
+        }
+    }
+
 
    
 
@@ -120,7 +171,7 @@ export function Wrapper() {
                 chainId: celo.id,
                 feeCurrency: USDT_ADAPTER,
                 functionName: "orderFleet",
-                args: [BigInt(amount), "0x74869c892C9f64AC650e3eC13F6d07C0f21007a6"/*cUSD*/],
+                args: [BigInt(amount), fleetOrderToken/*cUSD*/],
             },{
                 onSuccess() {
                     //success toast
@@ -155,7 +206,7 @@ export function Wrapper() {
                 chainId: celo.id,
                 feeCurrency: USDT_ADAPTER,
                 functionName: "orderFleetFraction",
-                args: [BigInt(shares), "0x74869c892C9f64AC650e3eC13F6d07C0f21007a6"/*cUSD*/],
+                args: [BigInt(shares), fleetOrderToken/*cUSD*/],
             },{
                 onSuccess() {
                     //success toast
@@ -262,12 +313,16 @@ export function Wrapper() {
                                                 orderFleetWithCeloUSD()
                                             }
                                         } else {
-                                            if (!isUserReferredToProvider) {
-                                                registerUser(address!, "0x74869c892C9f64AC650e3eC13F6d07C0f21007a6")
+                                            if ( (Number(formatUnits(testTokenBalance!, 18))) <= 2000 ) {
+                                                getTestTokens()
                                             } else {
-                                                toast.error("Already approved!", {
-                                                    description: "You are have already approved & registered to a provider",
-                                                })
+                                                if (!isUserReferredToProvider  || (Number(formatUnits(allowanceCeloUSD!, 18))) === 0) {
+                                                    registerUser(address!, fleetOrderToken)
+                                                } else {
+                                                    toast.error("Already approved!", {
+                                                        description: "You are have already approved & registered to a provider",
+                                                    })
+                                                }
                                             }
                                         }
                                     }}
@@ -299,7 +354,7 @@ export function Wrapper() {
                                                     : (
                                                         <>
                                                             {
-                                                                allowanceCeloUSD && allowanceCeloUSD > 0 ? "Pay with cUSD" : "Approve cUSD"
+                                                                allowanceCeloUSD && allowanceCeloUSD > 0 ? "Pay with cUSD" : `${( (Number(formatUnits(testTokenBalance!, 18))) <= 2000 ) ? "Get Test cUSD" : "Approve cUSD"}`
                                                             }
                                                         </>
                                                     )
