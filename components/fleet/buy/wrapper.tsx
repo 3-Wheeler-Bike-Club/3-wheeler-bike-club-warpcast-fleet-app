@@ -18,7 +18,7 @@ import { motion } from "framer-motion"
 import { ChartPie, Ellipsis, Minus, Plus, RefreshCw } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { USDT_ADAPTER, divvi, /*cUSD,*/ fleetOrderBook } from "@/utils/constants/addresses";
+import { USDT_ADAPTER, divvi, /*cUSD,*/ fleetOrderBook, fleetOrderToken } from "@/utils/constants/addresses";
 import { fleetOrderBookAbi } from "@/utils/abis/fleetOrderBook";
 import { erc20Abi } from "viem";
 import { celo, optimism } from "viem/chains";
@@ -83,7 +83,7 @@ export function Wrapper() {
 
     const { data: allowanceCeloUSD, isLoading: allowanceCeloDollarLoading, queryKey: allowanceCeloDollarQueryKey } = useReadContract({
         abi: erc20Abi,
-        address: "0x74869c892C9f64AC650e3eC13F6d07C0f21007a6"/*cUSD*/,
+        address: fleetOrderToken/*cUSD*/,
         functionName: "allowance",
         args: [address!, fleetOrderBook],
     })
@@ -120,7 +120,7 @@ export function Wrapper() {
                 chainId: celo.id,
                 feeCurrency: USDT_ADAPTER,
                 functionName: "orderFleet",
-                args: [BigInt(amount), "0x74869c892C9f64AC650e3eC13F6d07C0f21007a6"/*cUSD*/],
+                args: [BigInt(amount), fleetOrderToken/*cUSD*/],
             },{
                 onSuccess() {
                     //success toast
@@ -155,7 +155,7 @@ export function Wrapper() {
                 chainId: celo.id,
                 feeCurrency: USDT_ADAPTER,
                 functionName: "orderFleetFraction",
-                args: [BigInt(shares), "0x74869c892C9f64AC650e3eC13F6d07C0f21007a6"/*cUSD*/],
+                args: [BigInt(shares), fleetOrderToken/*cUSD*/],
             },{
                 onSuccess() {
                     //success toast
@@ -263,7 +263,7 @@ export function Wrapper() {
                                             }
                                         } else {
                                             if (!isUserReferredToProvider) {
-                                                registerUser(address!, "0x74869c892C9f64AC650e3eC13F6d07C0f21007a6")
+                                                registerUser(address!, fleetOrderToken)
                                             } else {
                                                 toast.error("Already approved!", {
                                                     description: "You are have already approved & registered to a provider",
