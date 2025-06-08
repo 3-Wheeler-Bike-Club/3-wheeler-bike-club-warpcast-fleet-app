@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation";
-import { useAccount, useBlockNumber, useReadContract, useWriteContract } from "wagmi";
+import { useAccount, useBlockNumber, useReadContract, useSendTransaction, useWriteContract } from "wagmi";
 import { Button } from "@/components/ui/button"
 import {
   Drawer,
@@ -20,12 +20,14 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { USDT_ADAPTER, divvi, /*cUSD,*/ fleetOrderBook, fleetOrderToken } from "@/utils/constants/addresses";
 import { fleetOrderBookAbi } from "@/utils/abis/fleetOrderBook";
-import { erc20Abi } from "viem";
+import { encodeFunctionData, erc20Abi, parseUnits } from "viem";
 import { celo, optimism } from "viem/chains";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 import { divviAbi } from "@/utils/abis/divvi";
 import { useDivvi } from "@/hooks/useDivvi";
+import { fleetOrderTokenAbi } from "@/utils/abis/fleetOrderToken";
+import { publicClient } from "@/utils/client";
 
 
 
@@ -41,13 +43,16 @@ export function Wrapper() {
 
     const router = useRouter()
     
+    
     const { writeContractAsync } = useWriteContract()
 
     const fleetFractionPriceQueryClient = useQueryClient()
     const allowanceCeloDollarQueryClient = useQueryClient()
     const isUserReferredToProviderQueryClient = useQueryClient()
+    const testTokenBalanceQueryClient = useQueryClient()
     const { data: blockNumber } = useBlockNumber({ watch: true }) 
 
+    const { sendTransactionAsync } = useSendTransaction()
     const { registerUser, loading } = useDivvi()
 
 
@@ -105,6 +110,52 @@ export function Wrapper() {
         isUserReferredToProviderQueryClient.invalidateQueries({ queryKey: isUserReferredToProviderQueryKey }) 
     }, [blockNumber, isUserReferredToProviderQueryClient, isUserReferredToProviderQueryKey]) 
     console.log(isUserReferredToProvider!)
+
+    const { data: testTokenBalance, queryKey: testTokenBalanceQueryKey } = useReadContract({
+        abi: erc20Abi,
+        address: fleetOrderToken,
+        functionName: "balanceOf",
+        chainId: celo.id,
+        args: [address!],
+
+    })
+    useEffect(() => { 
+        testTokenBalanceQueryClient.invalidateQueries({ queryKey: testTokenBalanceQueryKey }) 
+    }, [blockNumber, testTokenBalanceQueryClient, testTokenBalanceQueryKey]) 
+    console.log(testTokenBalance!)
+
+    async function getTestTokens() {
+        try {
+            setLoadingCeloUSD(true)
+            const hash = await sendTransactionAsync({
+                to: fleetOrderToken,
+                data: encodeFunctionData({
+                    abi: fleetOrderTokenAbi,
+                    functionName: "dripPayeeFromPSP",
+                    args: [address!, parseUnits("1500000", 18)],
+                }),
+                chainId: celo.id,
+            })
+            const transaction = await publicClient.waitForTransactionReceipt({
+                confirmations: 1,
+                hash: hash
+            })
+
+            if (transaction) {
+                toast.success("Test Tokens Received", {
+                    description: `You can now make orders to your fleet with test tokens`,
+                })
+                setLoadingCeloUSD(false)
+            }
+            
+        } catch (error) {
+            console.log(error)
+            toast.error("Transaction failed", {
+                description: `Something went wrong, please try again`,
+            })
+            setLoadingCeloUSD(false)
+        }
+    }
 
 
    
