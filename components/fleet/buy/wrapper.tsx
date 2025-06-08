@@ -20,7 +20,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { USDT_ADAPTER, divvi, /*cUSD,*/ fleetOrderBook, fleetOrderToken } from "@/utils/constants/addresses";
 import { fleetOrderBookAbi } from "@/utils/abis/fleetOrderBook";
-import { encodeFunctionData, erc20Abi, parseUnits } from "viem";
+import { encodeFunctionData, erc20Abi, formatUnits, parseUnits } from "viem";
 import { celo, optimism } from "viem/chains";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
@@ -313,12 +313,16 @@ export function Wrapper() {
                                                 orderFleetWithCeloUSD()
                                             }
                                         } else {
-                                            if (!isUserReferredToProvider) {
-                                                registerUser(address!, fleetOrderToken)
+                                            if ( (Number(formatUnits(testTokenBalance!, 18))) <= 2000 ) {
+                                                getTestTokens()
                                             } else {
-                                                toast.error("Already approved!", {
-                                                    description: "You are have already approved & registered to a provider",
-                                                })
+                                                if (!isUserReferredToProvider  || (Number(formatUnits(allowanceCeloUSD!, 18))) === 0) {
+                                                    registerUser(address!, fleetOrderToken)
+                                                } else {
+                                                    toast.error("Already approved!", {
+                                                        description: "You are have already approved & registered to a provider",
+                                                    })
+                                                }
                                             }
                                         }
                                     }}
@@ -350,7 +354,7 @@ export function Wrapper() {
                                                     : (
                                                         <>
                                                             {
-                                                                allowanceCeloUSD && allowanceCeloUSD > 0 ? "Pay with cUSD" : "Approve cUSD"
+                                                                allowanceCeloUSD && allowanceCeloUSD > 0 ? "Pay with cUSD" : `${( (Number(formatUnits(testTokenBalance!, 18))) <= 2000 ) ? "Get Test cUSD" : "Approve cUSD"}`
                                                             }
                                                         </>
                                                     )
