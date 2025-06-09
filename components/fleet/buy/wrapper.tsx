@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation";
-import { useAccount, useBlockNumber, useReadContract, useSendTransaction, useWriteContract } from "wagmi";
+import { useAccount, useBlockNumber, useReadContract, useSendTransaction, useSwitchChain, useWriteContract } from "wagmi";
 import { Button } from "@/components/ui/button"
 import {
   Drawer,
@@ -34,7 +34,8 @@ import { publicClient } from "@/utils/client";
 
 export function Wrapper() {
 
-    const { address } = useAccount()
+    const { address, chainId } = useAccount()
+    const { switchChainAsync } = useSwitchChain()
 
     const [amount, setAmount] = useState(1)
     const [fractions, setFractions] = useState(1)
@@ -127,6 +128,9 @@ export function Wrapper() {
     async function getTestTokens() {
         try {
             setLoadingCeloUSD(true)
+            if (chainId !== celo.id) {
+                await switchChainAsync({ chainId: celo.id })
+            }
             const hash = await sendTransactionAsync({
                 to: fleetOrderToken,
                 data: encodeFunctionData({
@@ -165,6 +169,9 @@ export function Wrapper() {
     async function orderFleetWithCeloUSD() { 
         try {
             setLoadingCeloUSD(true)
+            if (chainId !== celo.id) {
+                await switchChainAsync({ chainId: celo.id })
+            }
             writeContractAsync({
                 abi: fleetOrderBookAbi,
                 address: fleetOrderBook,
@@ -200,6 +207,9 @@ export function Wrapper() {
     async function orderFleetFractionsWithCeloUSD( shares: number ) {    
         try {
             setLoadingCeloUSD(true)
+            if (chainId !== celo.id) {
+                await switchChainAsync({ chainId: celo.id })
+            }
             writeContractAsync({
                 abi: fleetOrderBookAbi,
                 address: fleetOrderBook,
