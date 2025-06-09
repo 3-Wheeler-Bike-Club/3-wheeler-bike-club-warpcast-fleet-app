@@ -5,13 +5,15 @@ import { useState } from "react"
 import { toast } from "sonner"
 import { createWalletClient, encodeFunctionData, erc20Abi, http, maxUint256 } from "viem"
 import { celo } from "viem/chains"
-import { useSendTransaction } from "wagmi"
+import { useAccount, useSendTransaction, useSwitchChain } from "wagmi"
 
 
 export const useDivvi = () => {
   
     const [loading, setLoading] = useState(false)
     const { sendTransactionAsync } = useSendTransaction()
+    const { chainId } = useAccount()
+    const { switchChainAsync } = useSwitchChain()
 
     async function registerUser(account: `0x${string}`, to: `0x${string}`) {
       try {
@@ -33,6 +35,9 @@ export const useDivvi = () => {
           providers: ["0x5f0a55FaD9424ac99429f635dfb9bF20c3360Ab8", "0xB06a1b291863f923E7417E9F302e2a84018c33C5", "0x6226ddE08402642964f9A6de844ea3116F0dFc7e", "0x0423189886D7966f0DD7E7d256898DAeEE625dca"],
         })
 
+        if (chainId !== celo.id) {
+          await switchChainAsync({ chainId: celo.id })
+        }
         
         const tx = await sendTransactionAsync({
           to: to,
