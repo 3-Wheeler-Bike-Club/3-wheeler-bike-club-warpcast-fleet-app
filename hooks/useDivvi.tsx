@@ -3,7 +3,7 @@ import { fleetOrderBook } from "@/utils/constants/addresses"
 import { getDataSuffix, submitReferral } from "@divvi/referral-sdk"
 import { useState } from "react"
 import { toast } from "sonner"
-import { createWalletClient, encodeFunctionData, erc20Abi, http, maxUint256 } from "viem"
+import { encodeFunctionData, erc20Abi, maxUint256 } from "viem"
 import { celo } from "viem/chains"
 import { useAccount, useSendTransaction, useSwitchChain } from "wagmi"
 

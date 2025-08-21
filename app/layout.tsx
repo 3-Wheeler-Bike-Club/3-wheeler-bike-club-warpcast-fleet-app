@@ -5,6 +5,7 @@ import { FrameProvider } from "@/context/FrameProvider";
 import { WagmiContext } from "@/context/wagmiContext";
 import { MiniAppContext } from "@/context/miniAppContext";
 import { Toaster } from "@/components/ui/sonner";
+import { Footer } from "@/components/bottom/footer";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -55,6 +56,7 @@ export default function RootLayout({
             <FrameProvider>
               {children}
               <Toaster expand={true} richColors />
+              <Footer />
             </FrameProvider>
           </MiniAppContext>
         </WagmiContext>
