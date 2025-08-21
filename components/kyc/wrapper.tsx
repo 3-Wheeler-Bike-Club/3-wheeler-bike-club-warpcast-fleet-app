@@ -1,16 +1,19 @@
 "use client"
 
-import { useAccount, useBlockNumber, useReadContract } from "wagmi"
+import { useAccount/*, useBlockNumber, useReadContract*/ } from "wagmi"
+/*
 import { fleetOrderBook } from "@/utils/constants/addresses"
 import { fleetOrderBookAbi } from "@/utils/abis/fleetOrderBook"
 import { useQueryClient } from "@tanstack/react-query"
 import { useEffect } from "react"
+*/
 import { Menu } from "@/components/top/menu"
 import { useRouter } from "next/navigation"
 import { useGetProfile } from "@/hooks/useGetProfile"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { DoorOpen, UserRoundSearch } from "lucide-react"
 import { VerifyContact } from "@/components/kyc/verifyContact"
+import { VerifyKYC } from "@/components/kyc/verifyKYC"
 
 
 
@@ -83,7 +86,7 @@ export function Wrapper() {
                                             : <p className="text-sm max-md:text-xs text-center text-muted-foreground">Complete your KYC options below to access P2P fleet financing.</p>
                                         }
                                         {
-                                            profile?.email ? <></> : <VerifyContact address={address!} profile={profile} getProfileSync={getProfileSync} />
+                                            profile?.email ? <VerifyKYC address={address!} profile={profile} getProfileSync={getProfileSync} /> : <VerifyContact address={address!} profile={profile} getProfileSync={getProfileSync} />
                                         }
                                     </div>
                                     
