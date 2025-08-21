@@ -15,7 +15,7 @@ export const useGetLogs = (address: `0x${string}` | undefined) => {
         if (address) {
             const eventLogs = await publicClient.getLogs({
                 address: fleetOrderBook,
-                event: fleetOrderBookAbi[31],
+                event: fleetOrderBookAbi[33],
                 args: {
                     buyer: address,
                 },
@@ -29,7 +29,7 @@ export const useGetLogs = (address: `0x${string}` | undefined) => {
         if (address) {
             const eventLogs = await publicClient.getLogs({
                 address: fleetOrderBook,
-                event: fleetOrderBookAbi[32],
+                event: fleetOrderBookAbi[34],
                 args: {
                     buyer: address,
                 },
@@ -43,7 +43,7 @@ export const useGetLogs = (address: `0x${string}` | undefined) => {
         if (address) {
             const eventLogs = await publicClient.getLogs({
                 address: fleetOrderBook,
-                event: fleetOrderBookAbi[35],
+                event: fleetOrderBookAbi[37],
                 args: {
                     buyer: address,
                 },
