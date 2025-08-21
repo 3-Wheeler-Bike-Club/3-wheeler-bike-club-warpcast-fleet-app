@@ -27,7 +27,7 @@ export function Wrapper() {
             <div className="flex-1 flex flex-col items-center justify-center w-full max-w-7xl mx-auto">
                 <div className="relative w-48 h-48 mb-12">
                     <Image
-                        src="/3wbClubLogo.png"
+                        src="/icons/logo.png"
                         alt="3WB Logo"
                         fill
                         className="rounded-3xl"
