@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { FrameProvider } from "@/context/FrameProvider";
+import { MiniAppProvider } from "@/context/miniAppProvider";
 import { WagmiContext } from "@/context/wagmiContext";
-import { MiniAppContext } from "@/context/miniAppContext";
+import { ConnectContext } from "@/context/connectContext";
 import { Toaster } from "@/components/ui/sonner";
 import { Footer } from "@/components/bottom/footer";
 
@@ -22,13 +22,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const frame = {
+  const miniApp = {
     version: "next",
     imageUrl: "https://warp.3wb.club/opengraph-image.png",
     button: {
       title: "Finance a 3-Wheeler 🛺💨",
       action: {
-        type: "launch_frame",
+        type: "launch_miniapp",
         url: "https://warp.3wb.club",
         name:"3WB P2P Fleet Financing",
         splashImageUrl: "https://warp.3wb.club/icons/logo.png",
@@ -44,21 +44,21 @@ export default function RootLayout({
           content="https://warp.3wb.club/opengraph-image.png" 
         />
         <meta 
-          name="fc:frame"
-          content={JSON.stringify(frame)} 
+          name="fc:miniapp"
+          content={JSON.stringify(miniApp)} 
         />
       </head>
       <body
         className={`${geistMono.className}`}
       >
         <WagmiContext>
-          <MiniAppContext>
-            <FrameProvider>
+          <ConnectContext>
+            <MiniAppProvider>
               {children}
               <Toaster expand={true} richColors />
               <Footer />
-            </FrameProvider>
-          </MiniAppContext>
+            </MiniAppProvider>
+          </ConnectContext>
         </WagmiContext>
       </body>
     </html>

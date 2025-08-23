@@ -1,6 +1,6 @@
 import { createConfig, http } from "wagmi";
 import { celo, optimism } from "wagmi/chains";
-import { farcasterMiniApp as miniAppConnector } from '@farcaster/miniapp-wagmi-connector'
+import { farcasterMiniApp as miniAppConnector } from "@farcaster/miniapp-wagmi-connector";
 
 
 export const config = createConfig({

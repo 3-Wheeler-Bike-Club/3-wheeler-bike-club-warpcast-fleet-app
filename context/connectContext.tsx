@@ -2,10 +2,10 @@
 
 import { useEffect } from "react";
 import { useConnect } from "wagmi";
-import { farcasterFrame as miniAppConnector } from "@farcaster/frame-wagmi-connector"
+import { farcasterMiniApp as miniAppConnector } from "@farcaster/miniapp-wagmi-connector";
 
 
-export const MiniAppContext = ({ children }: { children: React.ReactNode }) => {
+export const ConnectContext = ({ children }: { children: React.ReactNode }) => {
 
     const { connect } = useConnect();
       

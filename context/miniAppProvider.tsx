@@ -1,31 +1,31 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import sdk, { type Context, type FrameNotificationDetails,   } from "@farcaster/frame-sdk";
+import { sdk, Context, type MiniAppNotificationDetails, AddMiniApp } from "@farcaster/miniapp-sdk";
 import { createStore } from "mipd";
 import React from "react";
 
-interface FrameContextType {
+interface MiniAppContextType {
   isSDKLoaded: boolean;
-  context: Context.FrameContext | undefined;
+  context: Context.MiniAppContext | undefined;
   openUrl: (url: string) => Promise<void>;
   close: () => Promise<void>;
   added: boolean;
-  notificationDetails: FrameNotificationDetails | null;
+  notificationDetails: MiniAppNotificationDetails | null;
   lastEvent: string;
-  addFrame: () => Promise<void>;
-  addFrameResult: string;
+  addMiniApp: () => Promise<void>;
+  addMiniAppResult: string;
 }
 
-const FrameContext = React.createContext<FrameContextType | undefined>(undefined);
+const MiniAppContext = React.createContext<MiniAppContextType | undefined>(undefined);
 
-export function useFrame() {
+export function useMiniApp() {
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
-  const [context, setContext] = useState<Context.FrameContext>();
+  const [context, setContext] = useState<Context.MiniAppContext>();
   const [added, setAdded] = useState(false);
-  const [notificationDetails, setNotificationDetails] = useState<FrameNotificationDetails | null>(null);
+  const [notificationDetails, setNotificationDetails] = useState<MiniAppNotificationDetails | null>(null);
   const [lastEvent, setLastEvent] = useState("");
-  const [addFrameResult, setAddFrameResult] = useState("");
+  const [addMiniAppResult, setAddMiniAppResult] = useState("");
 
   // SDK actions only work in mini app clients, so this pattern supports browser actions as well
   const openUrl = useCallback(async (url: string) => {
@@ -44,29 +44,29 @@ export function useFrame() {
     }
   }, [context]);
 
-  const addFrame = useCallback(async () => {
+  const addMiniApp = useCallback(async () => {
     try {
       setNotificationDetails(null);
-      const result = await sdk.actions.addFrame();
+      const result = await sdk.actions.addMiniApp();
       
 
       if (result.notificationDetails) {
         setNotificationDetails(result.notificationDetails);
       }
-      setAddFrameResult(
+      setAddMiniAppResult(
         result.notificationDetails
           ? `Added, got notificaton token ${result.notificationDetails.token} and url ${result.notificationDetails.url}`
           : "Added, got no notification details"
       );
     } catch (error) {
-      setAddFrameResult(`Error: ${error}`);
-      /*
-      if (error instanceof AddFrame.RejectedByUser || error instanceof AddFrame.InvalidDomainManifest) {
-        setAddFrameResult(`Not added: ${error.message}`);
+      setAddMiniAppResult(`Error: ${error}`);
+      
+      if (error instanceof AddMiniApp.RejectedByUser || error instanceof AddMiniApp.InvalidDomainManifest) {
+        setAddMiniAppResult(`Not added: ${error.message}`);
       }else {
-        setAddFrameResult(`Error: ${error}`);
+        setAddMiniAppResult(`Error: ${error}`);
       }
-      */
+      
     }
   }, []);
 
@@ -77,23 +77,23 @@ export function useFrame() {
       setIsSDKLoaded(true);
 
       // Set up event listeners
-      sdk.on("frameAdded", ({ notificationDetails }) => {
-        console.log("Frame added", notificationDetails);
+      sdk.on("miniAppAdded", ({ notificationDetails }) => {
+        console.log("MiniApp added", notificationDetails);
         setAdded(true);
         setNotificationDetails(notificationDetails ?? null);
-        setLastEvent("Frame added");
+        setLastEvent("MiniApp added");
       });
 
-      sdk.on("frameAddRejected", ({ reason }) => {
-        console.log("Frame add rejected", reason);
+      sdk.on("miniAppAddRejected", ({ reason }) => {
+        console.log("MiniApp add rejected", reason);
         setAdded(false);
-        setLastEvent(`Frame add rejected: ${reason}`);
+        setLastEvent(`MiniApp add rejected: ${reason}`);
       });
 
-      sdk.on("frameRemoved", () => {
-        console.log("Frame removed");
+      sdk.on("miniAppRemoved", () => {
+        console.log("MiniApp removed");
         setAdded(false);
-        setLastEvent("Frame removed");
+        setLastEvent("MiniApp removed");
       });
 
       sdk.on("notificationsEnabled", ({ notificationDetails }) => {
@@ -140,23 +140,23 @@ export function useFrame() {
     added,
     notificationDetails,
     lastEvent,
-    addFrame,
-    addFrameResult,
+    addMiniApp,
+    addMiniAppResult,
     openUrl,
     close,
   };
 }
 
-export function FrameProvider({ children }: { children: React.ReactNode }) {
-  const frameContext = useFrame();
+export function MiniAppProvider({ children }: { children: React.ReactNode }) {
+  const miniAppContext = useMiniApp();
 
-  if (!frameContext.isSDKLoaded) {
+  if (!miniAppContext.isSDKLoaded) {
     return <div>Loading...</div>;
   }
 
   return (
-    <FrameContext.Provider value={frameContext}>
+    <MiniAppContext.Provider value={miniAppContext}>
       {children}
-    </FrameContext.Provider>
+    </MiniAppContext.Provider>
   );
 } 
