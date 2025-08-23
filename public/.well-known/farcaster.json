@@ -4,7 +4,7 @@
     "payload": "eyJkb21haW4iOiJ3YXJwLjN3Yi5jbHViIn0",
     "signature": "MHhhMDliZmIxZDhhZjJhNmZiYjY0NGQyZjEwODJmYzc4ZjU4ZjRmOGNkZjgzZmYzOGZkNmJmMzllYTEzNWRjMDVkNzczNGY4YTNhNDhlMGJiYTIwZjJkMzFmOGViNzNiOWZjOGI3OWMzYjNmNjg3YjZjMDljYWY2ZmNhZjFjZGRjNDFi"
   },
-  "frame": {
+  "miniapp": {
     "version": "next",
     "name": "3WB P2P Fleet Financing",
     "iconUrl": "https://warp.3wb.club/icons/logo.png",
