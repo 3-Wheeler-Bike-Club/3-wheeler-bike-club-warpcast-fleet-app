@@ -97,8 +97,8 @@ export function Wrapper() {
                     <div className="flex">
                         {
                             loading
-                            ? <Loader2 className="w-4 h-4 mr-2" />
-                            : <ChartNoAxesCombined className="w-4 h-4 mr-2" />
+                            ? <Loader2 className="w-4 h-4 animate-spin" />
+                            : <ChartNoAxesCombined/>
                         }
                     </div>
                     Start Earning
