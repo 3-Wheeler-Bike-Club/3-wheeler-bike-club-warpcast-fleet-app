@@ -3,18 +3,47 @@
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
-import { Wallet, TrendingUp, ShieldCheck, ChartNoAxesCombined } from "lucide-react";
+import { Wallet, TrendingUp, ShieldCheck, ChartNoAxesCombined, Loader2 } from "lucide-react";
 import Image from "next/image";
-import { useAccount } from "wagmi";
+import { useAccount, useBlockNumber, useReadContract } from "wagmi";
+import { fleetOrderBook } from "@/utils/constants/addresses";
+import { fleetOrderBookAbi } from "@/utils/abis/fleetOrderBook";
+import { useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
 export function Wrapper() {
     const router = useRouter()
     console.log(router)
 
+    const { address } = useAccount()
+
+    const compliantQueryClient = useQueryClient()
     
+    const { data: blockNumber } = useBlockNumber({ watch: true })  
+
+    const [loading, setLoading] = useState(true)
+
+
+    const { data: compliant, isLoading: compliantLoading, queryKey: compliantQueryKey } = useReadContract({
+        address: fleetOrderBook,
+        abi: fleetOrderBookAbi,
+        functionName: "isCompliant",
+        args: [address!],
+    })
+    useEffect(() => { 
+        compliantQueryClient.invalidateQueries({ queryKey: compliantQueryKey }) 
+    }, [blockNumber, compliantQueryClient, compliantQueryKey]) 
 
     async function Login() {
-        router.push("/fleet")
+        setLoading(true)
+        await new Promise(resolve => setTimeout(resolve, 3000))
+        if (compliant) {
+            router.push("/fleet")
+            setLoading(false)
+        } else {
+            router.push("/kyc")
+            setLoading(false)
+        }
     }
 
     const { isConnected } = useAccount();
@@ -62,11 +91,15 @@ export function Wrapper() {
 
                 <Button 
                     onClick={Login} 
-                    disabled={!isConnected}
+                    disabled={!isConnected || compliantLoading || loading}
                     className="rounded-full px-12 py-7 max-sm:px-8 max-sm:py-6"
                 >
                     <div className="flex">
-                        <ChartNoAxesCombined />
+                        {
+                            loading
+                            ? <Loader2 className="w-4 h-4 mr-2" />
+                            : <ChartNoAxesCombined className="w-4 h-4 mr-2" />
+                        }
                     </div>
                     Start Earning
                 </Button>
