@@ -21,7 +21,7 @@ export function Wrapper() {
     
     const { data: blockNumber } = useBlockNumber({ watch: true })  
 
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
 
 
     const { data: compliant, isLoading: compliantLoading, queryKey: compliantQueryKey } = useReadContract({
