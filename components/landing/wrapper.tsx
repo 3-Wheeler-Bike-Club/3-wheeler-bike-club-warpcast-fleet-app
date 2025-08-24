@@ -36,7 +36,7 @@ export function Wrapper() {
 
     async function Login() {
         setLoading(true)
-        await new Promise(resolve => setTimeout(resolve, 2000))
+        await new Promise(resolve => setTimeout(resolve, 1300))
         if (compliant) {
             router.push("/fleet")
         } else {
