@@ -10,12 +10,12 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
-import { Button } from "../../ui/button";
+import { Button } from "@/components/ui/button";
 import { HistoryIcon } from "lucide-react";
 import { useGetLogs } from "@/hooks/useGetLogs";
 import { useAccount } from "wagmi";
-import { Table, TableBody, TableCaption } from "../../ui/table";
-import { Log } from "./log";
+import { Table, TableBody } from "@/components/ui/table";
+import { Log } from "@/components/fleet/history/log";
 
 
 
