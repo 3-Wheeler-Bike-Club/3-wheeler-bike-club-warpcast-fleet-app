@@ -36,13 +36,11 @@ export function Wrapper() {
 
     async function Login() {
         setLoading(true)
-        await new Promise(resolve => setTimeout(resolve, 3000))
+        await new Promise(resolve => setTimeout(resolve, 2000))
         if (compliant) {
             router.push("/fleet")
-            setLoading(false)
         } else {
             router.push("/kyc")
-            setLoading(false)
         }
     }
 
