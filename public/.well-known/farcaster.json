@@ -5,7 +5,7 @@
     "signature": "MHhhMDliZmIxZDhhZjJhNmZiYjY0NGQyZjEwODJmYzc4ZjU4ZjRmOGNkZjgzZmYzOGZkNmJmMzllYTEzNWRjMDVkNzczNGY4YTNhNDhlMGJiYTIwZjJkMzFmOGViNzNiOWZjOGI3OWMzYjNmNjg3YjZjMDljYWY2ZmNhZjFjZGRjNDFi"
   },
   "miniapp": {
-    "version": "next",
+    "version": "1",
     "name": "3 Wheeler Bike Club",
     "iconUrl": "https://warp.3wb.club/icons/logo.png",
     "homeUrl": "https://warp.3wb.club",
