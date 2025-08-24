@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "@/app/globals.css";
 import { MiniAppProvider } from "@/context/miniAppProvider";
 import { WagmiContext } from "@/context/wagmiContext";
 import { ConnectContext } from "@/context/connectContext";
