@@ -12,7 +12,7 @@
     "imageUrl": "https://warp.3wb.club/opengraph-image.png",
     "buttonTitle": "Finance a 3-Wheeler 🛺💨",
     "splashImageUrl": "https://warp.3wb.club/icons/rounded_logo.png",
-    "splashBackgroundColor": "#f5f0ec",
+    "splashBackgroundColor": "#ffffff",
     "webhookUrl": "https://warp.3wb.club/webhook",
     "subtitle": "Finance a 3-Wheeler",
     "description": "Giving 3-Wheeler drivers the keys to ownership, and investors access to fractionalized opportunities to earn steady returns.",
@@ -28,7 +28,7 @@
       "earn"
     ],
     "heroImageUrl": "https://warp.3wb.club/opengraph-image.png",
-    "tagline": "Ownership, Community & Governance",
+    "tagline": "Ownership, Community and Governance",
     "ogTitle": "3 Wheeler Bike Club",
     "ogDescription": "A community finance platform powering Africa’s 3-wheeler economy.",
     "ogImageUrl": "https://warp.3wb.club/opengraph-image.png",

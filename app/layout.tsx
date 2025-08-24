@@ -31,8 +31,8 @@ export default function RootLayout({
         type: "launch_miniapp",
         url: "https://warp.3wb.club",
         name:"3WB P2P Fleet Financing",
-        splashImageUrl: "https://warp.3wb.club/icons/logo.png",
-        splashBackgroundColor:"#f5f0ec"
+        splashImageUrl: "https://warp.3wb.club/icons/rounded_logo.png",
+        splashBackgroundColor:"#ffffff"
       }
     }
   }
