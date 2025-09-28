@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@divvi/referral-sdk": "^1.0.0",
+    "@divvi/referral-sdk": "^2.3.0",
     "@farcaster/miniapp-sdk": "^0.1.9",
     "@farcaster/miniapp-wagmi-connector": "^1.0.0",
     "@hookform/resolvers": "^5.2.1",
