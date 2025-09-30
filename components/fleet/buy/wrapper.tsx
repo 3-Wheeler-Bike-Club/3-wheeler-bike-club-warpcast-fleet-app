@@ -30,8 +30,6 @@ import { useOrderFleetFraction } from "@/hooks/useOrderFleetFraction";
 import { OnRamp } from "@/components/fleet/buy/onRamp";
 
 
-
-
 export function Wrapper() {
 
     const { address } = useAccount()
@@ -130,7 +128,6 @@ export function Wrapper() {
     console.log(tokenBalance!)
 
     
-
     const { data: compliant, isLoading: compliantLoading, queryKey: compliantQueryKey } = useReadContract({
         address: fleetOrderBook,
         abi: fleetOrderBookAbi,
@@ -245,7 +242,7 @@ export function Wrapper() {
                                     {/**pay with celoUSD */}
                                     <Button 
                                         className={` ${allowanceCeloUSD && allowanceCeloUSD > 0 ? "w-full hover:bg-yellow-600" : "w-full bg-yellow-300 hover:bg-yellow-400"}` }
-                                        disabled={loadingOrderFleet || loadingOrderFleetFraction  || loadingApproval} 
+                                        disabled={loadingOrderFleet || loadingOrderFleetFraction || loadingApproval} 
                                         onClick={() => {
                                             if (allowanceCeloUSD && allowanceCeloUSD > 0) {
                                                 if (isFractionsMode) {
