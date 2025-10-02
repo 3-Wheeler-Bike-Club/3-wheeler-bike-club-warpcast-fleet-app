@@ -52,13 +52,13 @@ export default function RootLayout({
         className={`${geistMono.className}`}
       >
         <WagmiContext>
-          <ConnectContext>
-            <MiniAppProvider>
+          <MiniAppProvider>
+            <ConnectContext>
               {children}
-              <Toaster expand={true} richColors />
-              <Footer />
-            </MiniAppProvider>
-          </ConnectContext>
+            </ConnectContext>
+            <Toaster expand={true} richColors />
+            <Footer />
+          </MiniAppProvider>
         </WagmiContext>
       </body>
     </html>
