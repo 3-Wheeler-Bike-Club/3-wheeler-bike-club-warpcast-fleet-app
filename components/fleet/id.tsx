@@ -20,7 +20,8 @@ export function Id( {fleet}: IdProps ) {
 
     const isfleetFractionedQueryClient = useQueryClient()
     const fleetSharesQueryClient = useQueryClient()
-    const totalFractionsQueryClient = useQueryClient()
+    const fleetLockPeriodQueryClient = useQueryClient()
+    const totalSupplyQueryClient = useQueryClient()
     const fleetOrderStatusQueryClient = useQueryClient()
     const fleetFractionPriceQueryClient = useQueryClient()
     const { data: blockNumber } = useBlockNumber({ watch: true }) 
@@ -47,15 +48,25 @@ export function Id( {fleet}: IdProps ) {
     }, [blockNumber, fleetSharesQueryClient, fleetSharesQueryKey]) 
 
 
-    const { data: totalFractions, queryKey: totalFractionsQueryKey } = useReadContract({
+    const { data: totalSupply, queryKey: totalSupplyQueryKey } = useReadContract({
         address: fleetOrderBook,
         abi: fleetOrderBookAbi,
         functionName: "totalSupply",
         args: [BigInt(Number(fleet))],
     })
     useEffect(() => { 
-        totalFractionsQueryClient.invalidateQueries({ queryKey: totalFractionsQueryKey }) 
-    }, [blockNumber, totalFractionsQueryClient, totalFractionsQueryKey]) 
+        totalSupplyQueryClient.invalidateQueries({ queryKey: totalSupplyQueryKey }) 
+    }, [blockNumber, totalSupplyQueryClient, totalSupplyQueryKey]) 
+
+    const { data: fleetLockPeriod, queryKey: fleetLockPeriodQueryKey } = useReadContract({
+        address: fleetOrderBook,
+        abi: fleetOrderBookAbi,
+        functionName: "getFleetLockPeriodPerOrder",
+        args: [BigInt(Number(fleet))],
+    })
+    useEffect(() => { 
+        fleetLockPeriodQueryClient.invalidateQueries({ queryKey: fleetLockPeriodQueryKey }) 
+    }, [blockNumber, fleetLockPeriodQueryClient, fleetLockPeriodQueryKey]) 
 
 
     const { data: fleetOrderStatus, queryKey: fleetOrderStatusQueryKey } = useReadContract({
@@ -111,7 +122,7 @@ export function Id( {fleet}: IdProps ) {
                                     <div className="flex items-center gap-1">
                                         <span className="text-right font-bold">{fleetShares}</span>
                                         <span className="text-muted-foreground"> / </span>
-                                        <span className="text-right font-semibold italic">{totalFractions}</span>
+                                        <span className="text-right font-semibold italic">{totalSupply}</span>
                                         <span className="text-muted-foreground"> / </span>
                                         <span className="text-muted-foreground italic">50</span>
                                     </div>
@@ -132,7 +143,7 @@ export function Id( {fleet}: IdProps ) {
                         </div>
                         <div className="flex justify-between items-center">
                             <span className="font-semibold">Weekly ROI:</span>
-                            <span className="text-right"><span className="font-bold text-muted-foreground" >$</span> {isfleetFractioned ? `${((( Number(fleetFractionPrice!) * Number(fleetShares!) ) * 1.75) / 60).toFixed(4)}` : `${(( (50 * Number(fleetFractionPrice!)) * 1.75 ) / 60).toFixed(4)}`}</span>
+                            <span className="text-right"><span className="font-bold text-muted-foreground" >$</span> {isfleetFractioned ? `${((( Number(fleetFractionPrice!) * Number(fleetShares!) ) * 1.75) / Number(fleetLockPeriod)).toFixed(4)}` : `${(( (50 * Number(fleetFractionPrice!)) * 1.75 ) / Number(fleetLockPeriod)).toFixed(4)}`}</span>
                         </div>
                         <div className="flex justify-between items-center">
                             <span className="font-semibold">Total ROI <span className="text-muted-foreground italic text-yellow-800">(75%)</span>:</span>
