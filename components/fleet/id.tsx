@@ -24,6 +24,8 @@ export function Id( {fleet}: IdProps ) {
     const totalSupplyQueryClient = useQueryClient()
     const fleetOrderStatusQueryClient = useQueryClient()
     const fleetFractionPriceQueryClient = useQueryClient()
+    const fleetInitialValuePerOrderQueryClient = useQueryClient()
+    const fleetLiquidityProviderExpectedValuePerOrderQueryClient = useQueryClient()
     const { data: blockNumber } = useBlockNumber({ watch: true }) 
 
     const { data: isfleetFractioned, queryKey: isfleetFractionedQueryKey } = useReadContract({
@@ -91,6 +93,25 @@ export function Id( {fleet}: IdProps ) {
         fleetFractionPriceQueryClient.invalidateQueries({ queryKey: fleetFractionPriceQueryKey }) 
     }, [blockNumber, fleetFractionPriceQueryClient, fleetFractionPriceQueryKey]) 
 
+
+    const { data: fleetInitialValuePerOrder, queryKey: fleetInitialValuePerOrderQueryKey } = useReadContract({
+        abi: fleetOrderBookAbi,
+        address: fleetOrderBook,
+        functionName: "getFleetInitialValuePerOrder",
+    })
+    useEffect(() => { 
+        fleetInitialValuePerOrderQueryClient.invalidateQueries({ queryKey: fleetInitialValuePerOrderQueryKey }) 
+    }, [blockNumber, fleetInitialValuePerOrderQueryClient, fleetInitialValuePerOrderQueryKey]) 
+
+
+    const { data: fleetLiquidityProviderExpectedValuePerOrder, queryKey: fleetLiquidityProviderExpectedValuePerOrderQueryKey } = useReadContract({
+        abi: fleetOrderBookAbi,
+        address: fleetOrderBook,
+        functionName: "getFleetLiquidityProviderExpectedValuePerOrder",
+    })
+    useEffect(() => { 
+        fleetLiquidityProviderExpectedValuePerOrderQueryClient.invalidateQueries({ queryKey: fleetLiquidityProviderExpectedValuePerOrderQueryKey }) 
+    }, [blockNumber, fleetLiquidityProviderExpectedValuePerOrderQueryClient, fleetLiquidityProviderExpectedValuePerOrderQueryKey]) 
 
     
     return (
